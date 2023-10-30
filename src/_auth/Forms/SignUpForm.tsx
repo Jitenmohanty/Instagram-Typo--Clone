@@ -1,27 +1,36 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage,
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
-import {Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SignupValidation } from "@/lib/validations";
 import { z } from "zod";
 import Loader from "@/components/shared/Loader";
+import { createUserAccount } from "@/lib/appwrite/api";
 
 const SignUpForm = () => {
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
     defaultValues: {
+      name: "",
       username: "",
+      email: "",
+      password: "",
     },
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof SignupValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof SignupValidation>) {
+    const newUser = await createUserAccount(values);
+    console.log(newUser);
   }
   const isLoading = false;
   return (
@@ -38,7 +47,8 @@ const SignUpForm = () => {
 
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-5 w-full mt-4">
+          className="flex flex-col gap-5 w-full mt-4"
+        >
           <FormField
             control={form.control}
             name="name"
@@ -96,7 +106,7 @@ const SignUpForm = () => {
           />
 
           <Button type="submit" className="shad-button_primary">
-            { isLoading?(
+            {isLoading ? (
               <div className="flex-center gap-2">
                 <Loader /> Loading...
               </div>
@@ -109,7 +119,8 @@ const SignUpForm = () => {
             Already have an account?
             <Link
               to="/sign-in"
-              className="text-primary-500 text-small-semibold ml-1">
+              className="text-primary-500 text-small-semibold ml-1"
+            >
               Log in
             </Link>
           </p>
