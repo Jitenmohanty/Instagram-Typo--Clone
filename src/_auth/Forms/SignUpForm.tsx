@@ -1,12 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+import {Form,FormControl,FormField,FormItem,FormLabel,FormMessage,
 } from "@/components/ui/form";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
@@ -14,9 +8,14 @@ import { Button } from "@/components/ui/button";
 import { SignupValidation } from "@/lib/validations";
 import { z } from "zod";
 import Loader from "@/components/shared/Loader";
-import { createUserAccount } from "@/lib/appwrite/api";
+import { useToast } from "@/components/ui/use-toast";
+import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations";
 
 const SignUpForm = () => {
+  const { toast } = useToast();
+  const {mutateAsync:createUserAccount , isLoading:isCreatingUser} = useCreateUserAccount();
+  const {mutateAsync:signInAccount , isLoading:isSigningIn} = useSignInAccount();
+
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
     defaultValues: {
@@ -30,9 +29,23 @@ const SignUpForm = () => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
     const newUser = await createUserAccount(values);
+
+    if (!newUser) {
+      toast({
+        title: "Sign-Up failed ! try again",
+      });
+    }
+    const session = await signInAccount({
+      email:values.email,
+      password:values.password
+    })
+    if(!session){
+      toast({
+        title: "Sign-Up failed ! try again",
+      })
+    }
     console.log(newUser);
   }
-  const isLoading = false;
   return (
     <Form {...form}>
       <div className="sm:w-420 flex-center flex-col ">
@@ -106,7 +119,7 @@ const SignUpForm = () => {
           />
 
           <Button type="submit" className="shad-button_primary">
-            {isLoading ? (
+            {isCreatingUser ? (
               <div className="flex-center gap-2">
                 <Loader /> Loading...
               </div>
