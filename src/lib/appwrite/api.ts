@@ -190,13 +190,16 @@ export async function likePost(postId: string, likesArray: string[]) {
     console.log(error);
   }
 }
-export async function savePost(postId: string, userId: string) {
+export async function savePost( userId: string, postId: string) {
   try {
     const savePost = await databases.createDocument(
       appwriteConfig.databasesId,
       appwriteConfig.savesCollectionId,
-      userId,
-      postId
+      ID.unique(),
+      {
+        user: userId,
+        post: postId,
+      }
     );
     if (!savePost) throw Error;
     return savePost;
@@ -210,10 +213,10 @@ export async function deleteSavePost(saveRecordId: string) {
     const statusCode = await databases.deleteDocument(
       appwriteConfig.databasesId,
       appwriteConfig.savesCollectionId,
-      saveRecordId
+      saveRecordId,
     );
     if (!statusCode) throw Error;
-    return statusCode;
+    return {status:"ok"};
   } catch (error) {
     console.log(error);
   }
