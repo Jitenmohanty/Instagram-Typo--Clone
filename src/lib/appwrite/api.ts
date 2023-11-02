@@ -221,3 +221,16 @@ export async function deleteSavePost(saveRecordId: string) {
     console.log(error);
   }
 }
+
+export async function getPostById(postId:string){
+  try {
+    const post = await databases.getDocument(
+      appwriteConfig.databasesId,
+      appwriteConfig.postsCollectionId,
+      postId
+    )
+    return post;
+  } catch (error) {
+      console.log(error)
+  } 
+}

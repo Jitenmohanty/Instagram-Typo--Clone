@@ -10,6 +10,7 @@ import {
   createUserAccount,
   deleteSavePost,
   getCurrentUser,
+  getPostById,
   getRecentPost,
   likePost,
   savePost,
@@ -123,3 +124,11 @@ export const useGetCurrentUser = () => {
     queryFn: getCurrentUser,
   });
 };
+
+export const useGetPostById = (postId:string)=>{
+   return useQuery({
+    queryKey:[QUERY_KEYS.GET_POST_BY_ID],
+    queryFn:()=>getPostById(postId),
+    enabled:!!postId
+   })
+}

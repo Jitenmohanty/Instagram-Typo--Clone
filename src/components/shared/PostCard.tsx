@@ -6,6 +6,7 @@ import PostStarts from "./PostStats";
 
 type PostCardProps = {
   post: Models.Document;
+  action: "Create" | "Update"
 };
 
 const PostCard = ({ post }: PostCardProps) => {
