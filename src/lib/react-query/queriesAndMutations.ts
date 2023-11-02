@@ -84,6 +84,7 @@ export const useLikePost = () => {
     },
   });
 };
+
 export const useSavePost = () => {
   const queryClient = useQueryClient();
 
@@ -103,6 +104,7 @@ export const useSavePost = () => {
     },
   });
 };
+
 export const useDeleteSavedPost = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -120,6 +122,7 @@ export const useDeleteSavedPost = () => {
     },
   });
 };
+
 export const useGetCurrentUser = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_CURRENT_USER],
@@ -146,6 +149,7 @@ export const useUpdatePost = () => {
     },
   });
 };
+
 export const useDeletePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
