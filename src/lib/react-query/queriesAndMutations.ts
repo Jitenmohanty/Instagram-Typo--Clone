@@ -11,10 +11,12 @@ import {
   deletePost,
   deleteSavePost,
   getCurrentUser,
+  getInfanitePosts,
   getPostById,
   getRecentPost,
   likePost,
   savePost,
+  searchPosts,
   signInAccount,
   signOutAccount,
   updatePost,
@@ -162,3 +164,25 @@ export const useDeletePost = () => {
     },
   });
 };
+
+export const useGetPost = () => {
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
+    queryFn: getInfanitePosts as any,
+    getNextPageParam: (lastPage: any) => {
+      if (lastPage && lastPage.length === 0) {
+        return null;
+      }
+      const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
+      return lastId;
+    },
+  });
+};
+
+export const useSearchPosts = (searchTerm:string)=>{
+    return useQuery({
+      queryKey:[QUERY_KEYS.SEARCH_POSTS],
+      queryFn:()=>searchPosts(searchTerm),
+      enabled:!!searchTerm
+    })
+}
