@@ -1,4 +1,4 @@
-import { INewPost, INewUser } from "@/types";
+import { INewPost, INewUser, IUpdatePost } from "@/types";
 import {
   useQuery,
   useMutation,
@@ -8,6 +8,7 @@ import {
 import {
   createPost,
   createUserAccount,
+  deletePost,
   deleteSavePost,
   getCurrentUser,
   getPostById,
@@ -16,6 +17,7 @@ import {
   savePost,
   signInAccount,
   signOutAccount,
+  updatePost,
 } from "../appwrite/api";
 import { QUERY_KEYS } from "./queriesKey";
 
@@ -86,8 +88,8 @@ export const useSavePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ userId , postId }: { userId: string; postId: string }) =>
-      savePost( userId , postId),
+    mutationFn: ({ userId, postId }: { userId: string; postId: string }) =>
+      savePost(userId, postId),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
@@ -125,10 +127,34 @@ export const useGetCurrentUser = () => {
   });
 };
 
-export const useGetPostById = (postId:string)=>{
-   return useQuery({
-    queryKey:[QUERY_KEYS.GET_POST_BY_ID],
-    queryFn:()=>getPostById(postId),
-    enabled:!!postId
-   })
-}
+export const useGetPostById = (postId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_POST_BY_ID],
+    queryFn: () => getPostById(postId),
+    enabled: !!postId,
+  });
+};
+
+export const useUpdatePost = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (post: IUpdatePost) => updatePost(post),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_POST_BY_ID, data?.$id],
+      });
+    },
+  });
+};
+export const useDeletePost = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ postId, imageId }: { postId?: string; imageId?: string }) =>
+      deletePost(postId, imageId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
+      });
+    },
+  });
+};
