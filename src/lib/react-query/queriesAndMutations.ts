@@ -166,8 +166,8 @@ export const useDeletePost = () => {
 };
 
 export const useGetPosts = () => {
- return useInfiniteQuery({
-  queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
     queryFn: getInfinitePosts as any,
     getNextPageParam: (lastPage: any) => {
       // If there's no data, there are no more pages.
@@ -179,13 +179,13 @@ export const useGetPosts = () => {
       const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
       return lastId;
     },
- })
+  });
 };
 
-export const useSearchPosts = (searchTerm:string)=>{
-    return useQuery({
-      queryKey:[QUERY_KEYS.SEARCH_POSTS],
-      queryFn:()=>searchPosts(searchTerm),
-      enabled:!!searchTerm
-    })
-}
+export const useSearchPosts = (searchTerm: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.SEARCH_POSTS],
+    queryFn: () => searchPosts(searchTerm),
+    enabled: !!searchTerm,
+  });
+};

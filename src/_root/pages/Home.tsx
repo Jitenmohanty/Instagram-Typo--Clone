@@ -7,7 +7,6 @@ const Home = () => {
   const {
     data: posts,
     isLoading: isPostLoading,
-    isError: isErrorPosts,
   } = useGetRecentPost();
   return (
     <div className="flex flex-1">
