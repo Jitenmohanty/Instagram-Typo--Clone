@@ -8,7 +8,7 @@ type UserCardProps = {
 
 const UserCard = ({ user }: UserCardProps) => {
   return (
-    <Link to={`\profile\${user.$id}`} className="user-card">
+    <Link to={`/profile/${user.id}`} className="user-card">
       <img
         src={user.imageUrl || "/asset/icons/profile-placeholder.svg"}
         alt="creator"
