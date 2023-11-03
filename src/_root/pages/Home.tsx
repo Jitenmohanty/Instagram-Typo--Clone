@@ -6,7 +6,7 @@ import { Models } from "appwrite";
 const Home = () => {
   const {
     data: posts,
-    isPending: isPostLoading,
+    isLoading: isPostLoading,
     isError: isErrorPosts,
   } = useGetRecentPost();
   return (
@@ -19,7 +19,7 @@ const Home = () => {
               {
                 posts?.documents.map((post: Models.Document)=>(
                   <li key={post.$id} className="flex justify-center w-full">
-                  <PostCard post={post} />
+                  <PostCard post={post} action={"Create"} />
                 </li>
                 ))
               }
