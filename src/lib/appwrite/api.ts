@@ -297,9 +297,9 @@ export async function deletePost(postId?: string, imageId?: string) {
     if (!statusCode) throw Error;
 
     await deleteFile(imageId);
-    return {status:"ok"}
+    return { status: "ok" };
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
@@ -325,18 +325,35 @@ export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
   }
 }
 
-export async function searchPosts(searchTerm:string) {
- 
+export async function searchPosts(searchTerm: string) {
   try {
     const post = await databases.listDocuments(
       appwriteConfig.databasesId,
       appwriteConfig.postsCollectionId,
-      [Query.search("caption",searchTerm)]
-    )
-    if(!post) throw Error;
+      [Query.search("caption", searchTerm)]
+    );
+    if (!post) throw Error;
     return post;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
+}
 
+export async function getUsers(limit?: number) {
+  const queries = [Query.orderDesc("$createdAt")];
+
+  if (limit) {
+    queries.push(Query.limit(limit));
+  }
+  try {
+    const user = await databases.listDocuments(
+      appwriteConfig.databasesId,
+      appwriteConfig.userCollectionId,
+      queries
+    );
+    if (!user) throw Error;
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
 }

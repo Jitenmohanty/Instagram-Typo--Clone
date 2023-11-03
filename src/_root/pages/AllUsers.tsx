@@ -1,8 +1,39 @@
+import Loader from "@/components/shared/Loader";
+import UserCard from "@/components/shared/UserCard";
+import { useToast } from "@/components/ui/use-toast";
+import { useGetUsers } from "@/lib/react-query/queriesAndMutations"
 
 const AllUsers = () => {
+  const { toast } = useToast();
+
+  const {data:creator ,isLoading,isError:isErrorCreator} = useGetUsers();
+
+  if(isErrorCreator){
+    toast({
+      variant: "destructive",
+      title:"Something Went Wrong"
+    })
+  }
+
   return (
-    <div>
-      All User
+    <div className="common-container">
+      <div className="user-container">
+      <h2 className="h3-bold md:h2-bold text-left w-full">All Users</h2>
+      {
+        isLoading && !creator ? <Loader/>:(
+          <ul className="user-grid">
+            {
+              creator?.documents.map((creator)=>(
+                <li key={creator?.$id} className="flex-1 min-w-[200px] w-full">
+                  <UserCard user={creator}/>
+                </li>   
+              ))
+            }
+          </ul>
+        )
+      }
+
+      </div>
     </div>
   )
 }
