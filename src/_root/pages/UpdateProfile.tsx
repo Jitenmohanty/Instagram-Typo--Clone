@@ -111,6 +111,89 @@ const UpdateProfile = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="shad-form_label">Name</FormLabel>
+                  <FormControl>
+                    <Input type="text" className="shad-input" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="shad-form_label">Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      className="shad-input"
+                      {...field}
+                      disabled
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="shad-form_label">Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      className="shad-input"
+                      {...field}
+                      disabled
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="bio"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="shad-form_label">Bio</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      className="shad-textarea custom-scrollbar"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="shad-form_message" />
+                </FormItem>
+              )}
+            />
+
+            <div className="flex gap-4 items-center justify-end">
+              <Button
+                type="button"
+                className="shad-button_dark_4"
+                onClick={() => navigate(-1)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="shad-button_primary whitespace-nowrap"
+                disabled={isLoadingUpdate}
+              >
+                {isLoadingUpdate && <Loader />}
+                Update Profile
+              </Button>
+            </div>
           </form>
         </Form>
       </div>
