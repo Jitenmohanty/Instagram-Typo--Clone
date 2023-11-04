@@ -24,9 +24,9 @@ import { useUserContext } from "@/context/AuthContext";
 const SignUpForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } =
+  const { mutateAsync: createUserAccount, isLoading: isCreatingAccount } =
     useCreateUserAccount();
-  const { mutateAsync: signInAccount, isPending: isSigningIn } =
+  const { mutateAsync: signInAccount, isLoading: isSigningIn } =
     useSignInAccount();
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
@@ -47,6 +47,7 @@ const SignUpForm = () => {
     if (!newUser) {
       toast({
         title: "Sign-Up failed ! try again",
+        variant:"destructive"
       });
     }
     const session = await signInAccount({

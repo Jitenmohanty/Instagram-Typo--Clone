@@ -54,7 +54,9 @@ export async function signInAccount(user: { email: string; password: string }) {
   try {
     const session = await account.createEmailSession(user.email, user.password);
     return session;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export async function getCurrentUser() {
@@ -286,6 +288,7 @@ export async function updatePost(post: IUpdatePost) {
   }
 }
 
+// Delete both post and image which is inside storage
 export async function deletePost(postId?: string, imageId?: string) {
   if (!postId || !imageId) return;
   try {
@@ -303,6 +306,7 @@ export async function deletePost(postId?: string, imageId?: string) {
   }
 }
 
+// it check infinitely post check wheather a Post added or not.
 export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
   const queries: any[] = [Query.orderDesc("$updatedAt"), Query.limit(9)];
 

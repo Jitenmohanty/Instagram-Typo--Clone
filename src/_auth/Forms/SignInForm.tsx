@@ -1,6 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {Form,FormControl,FormField,FormItem,FormLabel,FormMessage,
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Link, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
@@ -35,7 +41,8 @@ const SignInForm = () => {
     });
     if (!session) {
       toast({
-        title: "Sign-Up failed ! try again",
+        variant: "destructive",
+        title: "Invalid credentials ! try again",
       });
     }
 
@@ -44,7 +51,10 @@ const SignInForm = () => {
       form.reset();
       navigate("/");
     } else {
-      toast({ title: "Login failed. Please try again." });
+      toast({
+        variant: "destructive",
+        title: "Login failed. Please try again.",
+      });
       return;
     }
   }
@@ -106,7 +116,8 @@ const SignInForm = () => {
             Already have an account?
             <Link
               to="/sign-up"
-              className="text-primary-500 text-small-semibold ml-1">
+              className="text-primary-500 text-small-semibold ml-1"
+            >
               Sign up
             </Link>
           </p>
