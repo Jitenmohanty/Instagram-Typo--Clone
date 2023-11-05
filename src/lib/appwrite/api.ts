@@ -59,9 +59,21 @@ export async function signInAccount(user: { email: string; password: string }) {
   }
 }
 
-export async function getCurrentUser() {
+// ============================== GET ACCOUNT
+export async function getAccount() {
   try {
     const currentAccount = await account.get();
+
+    return currentAccount;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getCurrentUser() {
+  try {
+    const currentAccount = await getAccount();
+
     if (!currentAccount) throw Error;
 
     const currentUser = await databases.listDocuments(
@@ -69,11 +81,13 @@ export async function getCurrentUser() {
       appwriteConfig.userCollectionId,
       [Query.equal("accountId", currentAccount.$id)]
     );
+
     if (!currentUser) throw Error;
 
     return currentUser.documents[0];
   } catch (error) {
     console.log(error);
+    return null;
   }
 }
 
@@ -224,13 +238,15 @@ export async function deleteSavePost(saveRecordId: string) {
   }
 }
 
-export async function getPostById(postId: string) {
+export async function getPostById(postId?: string) {
+  if (!postId) throw Error;
   try {
     const post = await databases.getDocument(
       appwriteConfig.databasesId,
       appwriteConfig.postsCollectionId,
       postId
     );
+    if (!post) return Error;
     return post;
   } catch (error) {
     console.log(error);
