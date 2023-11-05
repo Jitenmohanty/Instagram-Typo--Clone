@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createContext, useContext, useEffect, useState } from "react";
 import { IUser } from "@/types";
 import { getCurrentUser } from "@/lib/appwrite/api";
+
 export const INITIAL_USER = {
   id: "",
   name: "",
@@ -90,5 +91,3 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 }
 
 export const useUserContext = () => useContext(AuthContext);
-
-export default AuthContext;
