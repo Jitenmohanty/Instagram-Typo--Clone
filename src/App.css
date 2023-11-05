@@ -278,6 +278,6 @@
     @apply rounded-lg base-medium transition flex gap-4 items-center justify-start hover:bg-transparent hover:text-white  !important;
   }
   .logoutbtn{
-    @apply hover:bg-red !important;
+    @apply  hover:text-white transition hover:bg-rose-800 !important;
   }
 }
