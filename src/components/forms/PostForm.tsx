@@ -23,7 +23,7 @@ import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FileUploader from "../shared/FileUploader";
-import { Loader } from "lucide-react";
+import Loader from "../shared/Loader";
 
 type PostFormProps = {
   post?: Models.Document;
