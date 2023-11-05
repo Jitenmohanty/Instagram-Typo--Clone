@@ -246,7 +246,7 @@ export async function getPostById(postId?: string) {
       appwriteConfig.postsCollectionId,
       postId
     );
-    if (!post) return Error;
+    if (!post) throw Error;
     return post;
   } catch (error) {
     console.log(error);
@@ -296,6 +296,13 @@ export async function updatePost(post: IUpdatePost) {
       if (hasFileToUpdate) {
         await deleteFile(image.imageId);
       }
+
+      // If no new file uploaded, just throw error
+      throw Error;
+    }
+
+    if (hasFileToUpdate) {
+      await deleteFile(post.imageId);
     }
 
     return updatedPost;
@@ -304,6 +311,23 @@ export async function updatePost(post: IUpdatePost) {
   }
 }
 
+export async function getUserPosts(userId?: string) {
+  if (!userId) return;
+
+  try {
+    const post = await databases.listDocuments(
+      appwriteConfig.databasesId,
+      appwriteConfig.postsCollectionId,
+      [Query.equal("creator", userId), Query.orderDesc("$createdAt")]
+    );
+
+    if (!post) throw Error;
+
+    return post;
+  } catch (error) {
+    console.log(error);
+  }
+}
 // Delete both post and image which is inside storage
 export async function deletePost(postId?: string, imageId?: string) {
   if (!postId || !imageId) return;
