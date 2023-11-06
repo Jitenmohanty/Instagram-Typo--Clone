@@ -1,21 +1,27 @@
-import  { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
-import { useUserContext } from "@/context/AuthContext";
+import { INITIAL_USER, useUserContext } from "@/context/AuthContext";
 import { useSignOutAccount } from "@/lib/react-query/queriesAndMutations";
 
 const TopBar = () => {
-  const { user } = useUserContext();
   const navigate = useNavigate();
-  const { mutate: signOut, isSuccess } = useSignOutAccount();
+  const { user, setUser, setIsAuthenticated } = useUserContext();
 
-  useEffect(() => {
-    if (isSuccess) navigate(0);
-  }, [isSuccess]);
+  const { mutate: signOut } = useSignOutAccount();
+
+  const handleSignOut = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    signOut();
+    setIsAuthenticated(false);
+    setUser(INITIAL_USER);
+    navigate("/sign-in");
+  };
 
   return (
     <section className="topbar">
-      <div className="flex-between px-5 py-4">
+      <div className="flex-between py-4 px-5">
         <Link to="/" className="flex gap-3 items-center">
           <img
             src="/assets/images/logo.svg"
@@ -24,11 +30,12 @@ const TopBar = () => {
             height={325}
           />
         </Link>
+
         <div className="flex gap-4">
           <Button
             variant="ghost"
             className="shad-button_ghost"
-            onClick={() => signOut()}
+            onClick={(e) => handleSignOut(e)}
           >
             <img src="/assets/icons/logout.svg" alt="logout" />
           </Button>
